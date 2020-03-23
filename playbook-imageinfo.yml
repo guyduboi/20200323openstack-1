@@ -1,0 +1,33 @@
+---
+- name: Our first playbook (first play)
+  hosts: localhost   # normally this is IP address(s) of the host(s) to connect to
+
+  tasks:
+
+    - name: Use Ansible to "openstack image list" 
+      os_image_info:    # call to os_image_info.py <-- installed with ansible
+        cloud: alta3cloud     # this is a reference to creds in clouds.yml
+      register: result   # create a var called result and save the results
+
+    - name: Show images
+      debug:     # call to debug.py <--- installed with ansible, prints to the screen
+        msg: "{{ result.openstack_image[0].id }}"    # this produces the UUID of the image
+         #msg: "{{ result.openstack_image[0].name }}"   # this produces the "human name" of the image
+   
+    - name: Use Ansible to "openstack flavor list"
+      os_flavor_info:    # call to os_flavor_info.py <-- installed with ansible
+        cloud: alta3cloud   # this is a reference to creds in clouds.yml
+      register: flav_result  # create a var called flav_result and save the results
+      
+    - name: Show flavors
+      debug:  # call to debug.py <-- installed with ansible, prints to the screen
+        msg: "{{ flav_result.openstack_flavors[0].id }}"
+         #msg: "{{ result.openstack_flavors[0].name }}"   # this produces the "human name" of the image
+    
+    - name: Launch a VM using the info we gathered
+      os_server:
+        cloud: alta3cloud   # this is a reference to creds in clouds.yml
+        state: present      # we want the VM to be created
+        name: ansible_vm1   # name of the VM in the cloud
+        image: "{{ result.openstack_image[0].id }}"
+        flavor: "{{ flav_result.openstack_flavors[0].id }}"
