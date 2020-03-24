@@ -1,0 +1,41 @@
+---
+- name: zach feeser
+  class: Advanced OpenStack
+  
+  
+  
+  
+  links:
+    - Uniform Resource Identifier (URI): Generic Syntax
+      https://tools.ietf.org/html/rfc3986
+    - REST Architecture Style
+      https://roy.gbiv.com/pubs/dissertation/rest_arch_style.htm
+    - CRUD
+      https://en.wikipedia.org/wiki/Create,_read,_update_and_delete
+    - Openstack SDK software package (client for Ansible)
+      https://docs.openstack.org/openstacksdk/latest/
+    - Alta3 Posters (cheatsheets)
+      https://alta3.com/posters
+    - Cool Chrome & FF plugin for parsing JSON
+      "JSON VIEWER AWESOME" (avail in plugin store)
+    - GitHub Desktop
+      https://desktop.github.com/
+      
+
+
+
+  class notes:
+  
+    - Ansible & OpenStack:
+        Install Instructions:
+          # install python3 and pip
+          - sudo yum install python3-pip -y     # rhel / centos / fedora
+          - or sudo apt install python3-pip -y  # debian / ubuntu
+          # see if you have python3 installed
+          - which python3   # try "which python" as well            
+              output something like: /usr/bin/python3
+          - python3 --version
+              output something like: Python 3.6.8
+          
+          - python3 -m pip install ansible --user
+          - python3 -m pip install openstacksdk --user
