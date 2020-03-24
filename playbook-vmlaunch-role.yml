@@ -1,0 +1,6 @@
+---
+- name: Launch a VM using the role os-launch-tiny-cirros-vm
+  hosts: localhost
+
+  roles:
+    - os-launch-tiny-cirros-vm

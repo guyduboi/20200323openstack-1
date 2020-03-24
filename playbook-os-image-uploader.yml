@@ -1,0 +1,36 @@
+---
+- name: A playbook to DL images and then UL to OpenStack Glance
+  hosts: localhost
+  connection: local
+
+  vars:
+    img_to_dl: "https://cloud-images.ubuntu.com/focal/20200322/focal-server-cloudimg-amd64-disk-kvm.img"
+    ansible_python_interpreter: "/usr/bin/python" 
+
+
+  tasks:
+
+    # create a temp folder to DL to
+
+    # download image that will be uploaded to OpenStack Glance
+    - name: Download the image "{{ img_to_dl }}"
+      get_url:
+        url: "{{ img_to_dl }}"
+        dest: /home/centos/ans/
+
+    # upload to OpenStack Glance (image service)
+    - name: Upload the image "{{ img_to_dl }}"
+      os_image:
+        cloud: alta3cloud   # this is a reference to creds in clouds.yml
+        name: 20200322-focal-server-cloudimg-amd64-disk-kvm  ################ <<<---- LEARN HOW TO STRIP OUT VALUES FROM OUR URL
+        container_format: bare
+        disk_format: qcow2
+        state: present
+        filename: /home/centos/ans/focal-server-cloudimg-amd64-disk-kvm.img
+        #kernel: cirros-vmlinuz
+        #ramdisk: cirros-initrd
+        properties:
+          cpu_arch: x86_64
+          distro: ubuntu
+
+    # Determine if checksum on upload matches what we expected
