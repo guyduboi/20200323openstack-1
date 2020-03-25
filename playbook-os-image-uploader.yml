@@ -4,29 +4,40 @@
   connection: local
 
   vars:
+    # user must supply this from https://cloud-images.ubuntu.com/
     img_to_dl: "https://cloud-images.ubuntu.com/focal/20200322/focal-server-cloudimg-amd64-disk-kvm.img"
-    ansible_python_interpreter: "/usr/bin/python" 
 
+    ansible_python_interpreter: "/usr/bin/python" 
+    tempdir: "~/image_temp/"  # throw away temp directory for downloaded image
+
+    ## assign values to vars based on input supplied by user
+    imgname: "{{ img_to_dl.split('/')[-1] }}" # create a list of items seperated by '/', pulls out the name from the end of the list
+    imgdate: "{{ img_to_dl.split('/')[-2] }}" # create a list of items seperated by '/', pulls out the date from second item in list
+    
 
   tasks:
 
     # create a temp folder to DL to
+    - name: Create a temp folder to DL to
+      file:
+        state: directory
+        path: "{{ tempdir }}"   # reference to a variable that contains the temp directory that will house our DLed image
 
     # download image that will be uploaded to OpenStack Glance
     - name: Download the image "{{ img_to_dl }}"
       get_url:
         url: "{{ img_to_dl }}"
-        dest: /home/centos/ans/
+        dest: "{{ tempdir }}"   # this is the dir to store downloaded image
 
     # upload to OpenStack Glance (image service)
     - name: Upload the image "{{ img_to_dl }}"
       os_image:
         cloud: alta3cloud   # this is a reference to creds in clouds.yml
-        name: 20200322-focal-server-cloudimg-amd64-disk-kvm  ################ <<<---- LEARN HOW TO STRIP OUT VALUES FROM OUR URL
+        name: "{{ imgdate }}-{{ imgname.split('.')[0] }}"   # merge imgdate with "just" name portion of image (drop '.img')
         container_format: bare
         disk_format: qcow2
         state: present
-        filename: /home/centos/ans/focal-server-cloudimg-amd64-disk-kvm.img
+        filename: "{{ tempdir }}{{ imgname }}"         # combine the temporary directory with the name of the downloaded image
         #kernel: cirros-vmlinuz
         #ramdisk: cirros-initrd
         properties:
@@ -34,3 +45,9 @@
           distro: ubuntu
 
     # Determine if checksum on upload matches what we expected
+ 
+    # delete the temporary directory
+    - name: Remove a temp folder containing the image on the local controller
+      file:
+        state: absent
+        path: "{{ tempdir }}"
