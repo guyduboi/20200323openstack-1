@@ -1,0 +1,16 @@
+---
+- name: Using the os-image-uplader role I just created
+  hosts: localhost
+
+  tasks:
+  - name: Imagine this is some important task
+    debug:
+      msg: "I am an important task!"
+
+  - name: Run the role os-image-uploader
+    import_role:
+      name: os-image-uploader
+
+  - name: Imagine this is another important task
+    debug:
+      msg: "I am another important task!"

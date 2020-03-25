@@ -1,0 +1,10 @@
+---
+# user must supply this from https://cloud-images.ubuntu.com/
+img_to_dl: "https://cloud-images.ubuntu.com/focal/20200322/focal-server-cloudimg-amd64-disk-kvm.img"
+
+ansible_python_interpreter: "/usr/bin/python" 
+tempdir: "~/image_temp/"  # throw away temp directory for downloaded image
+
+## assign values to vars based on input supplied by user
+imgname: "{{ img_to_dl.split('/')[-1] }}" # create a list of items seperated by '/', pulls out the name from the end of the list
+imgdate: "{{ img_to_dl.split('/')[-2] }}" # create a list of items seperated by '/', pulls out the date from second item in list
