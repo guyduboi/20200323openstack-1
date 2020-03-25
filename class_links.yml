@@ -20,6 +20,16 @@
       "JSON VIEWER AWESOME" (avail in plugin store)
     - GitHub Desktop
       https://desktop.github.com/
+    - Ansible OpenStack modules
+      https://docs.ansible.com/ansible/latest/modules/list_of_cloud_modules.html#openstack
+    - Ansible debug module (prints to the screen)
+      https://docs.ansible.com/ansible/latest/modules/debug_module.html
+    - Ansible Keywords
+      https://docs.ansible.com/ansible/latest/reference_appendices/playbooks_keywords.html
+    - OpenStack Glance service
+      https://docs.openstack.org/glance/latest/
+    - Ansible "Special" Variables
+      https://docs.ansible.com/ansible/latest/reference_appendices/special_variables.html
       
 
 
