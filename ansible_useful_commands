@@ -1,0 +1,4 @@
+# Useful Ansible commands to know
+
+## use ansible-galaxy to create the role directory "os-image-uploader"
+ansible-galaxy init os-image-uploader
