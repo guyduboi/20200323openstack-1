@@ -1,0 +1,35 @@
+---
+- name: A playbook to install applications
+  hosts: all # this SHOULD be the IP addresses of our VMs in the cloud
+
+  # default gather_facts: yes
+  gather_facts: yes  # this grabs "FACTS" (defines variables) that can be recalled in the playbook
+
+  tasks:
+  # this task installs the epel-release library
+  - name: install epel-release
+    yum:   # this is the module name
+      name: epel-release  # this is what we want installed
+      state: present      # we want epel-release to be installed (present)
+    become: yes  # this causes a TASK to run as sudo
+    vars:  # local TASK var
+      ansible_python_interpreter: /usr/bin/python
+    when: ansible_os_family == "RedHat"
+
+  - name: install an app or two
+    yum:
+      name: [moon-buggy, sl, figlet]
+      state: present
+    become: yes
+    vars:
+      ansible_python_interpreter: /usr/bin/python
+    when: ansible_os_family == "RedHat"
+
+  - name: install an app or two
+    apt:
+      name: [vim, tmux]
+      state: present
+    become: yes
+    vars:
+      ansible_python_interpreter: /usr/bin/python3
+    when: ansible_os_family == "Debian"
